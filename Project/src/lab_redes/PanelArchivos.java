@@ -12,6 +12,8 @@ import java.io.File;
 import java.nio.file.Files;
 import java.util.List;
 import javax.swing.*;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
@@ -77,6 +79,12 @@ public class PanelArchivos extends JPanel {
 
 	dataDisplay = new JTextArea();
 	dataDisplay.setSize(460, 100);
+	dataDisplay.addCaretListener(new CaretListener() {
+	    @Override
+	    public void caretUpdate(CaretEvent e) {
+		
+	    }
+	});
 	dataDisplay.setLocation(20, 100);
 	add(dataDisplay);
     }
@@ -99,11 +107,11 @@ public class PanelArchivos extends JPanel {
 		    for (int i = 0; i < text.size(); i++) {
 			loadedData += text.get(i) + "\n";
 		    }
-		    // TODO: verificar caracteres invalidos
+		    
 		    dataDisplay.setText(loadedData);
 		    isLoaded = true;
 		} catch (Exception e) {
-		    dataDisplay.setText("Error cargando archivo.");
+		    
 		}
 	    }
 	}

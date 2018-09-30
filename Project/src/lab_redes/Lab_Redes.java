@@ -24,8 +24,32 @@ public class Lab_Redes extends JFrame {
      */
     public static int modo = -1;
 
+    public static String rawText;
+    public static String binaryText;
+    public static String codedText;
+
+    public static void rawToBinary() {
+	String raw = rawText;
+	for (int i = 0; i < Tools.dictionary.length; i++) {
+	    String asciiRep = Tools.dictionary[i][Tools.ASCII];
+	    asciiRep = (asciiRep.equals(".") ? "\\." : asciiRep);
+	    raw = raw.replaceAll(asciiRep, Tools.dictionary[i][Tools.BINARY]);
+	}
+	binaryText = (raw.replaceAll("(\\d{8})", "$1" + "\n")).substring(0, binaryText.length() - 2);
+    }
+
+    public static void binaryToRaw() {
+	String bin = binaryText;
+	for (int i = 0; i < Tools.dictionary.length; i++) {
+	    String asciiRep = Tools.dictionary[i][Tools.ASCII];
+	    bin = bin.replaceAll(Tools.dictionary[i][Tools.BINARY], asciiRep);
+	}
+	rawText = bin.replaceAll("\\n", "");
+    }
+
     public static void main(String[] args) {
 	main = new Lab_Redes();
+	binaryToRaw();
     }
 
     public static String getFileDescription() {
@@ -91,4 +115,5 @@ public class Lab_Redes extends JFrame {
 	    archivo.setVisible(true);
 	}
     }
+
 }

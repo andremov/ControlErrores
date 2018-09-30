@@ -76,9 +76,10 @@ public abstract class Tools {
 	{"01110111", "119", "w"},
 	{"01111000", "120", "x"},
 	{"01111001", "121", "y"},
-	{"01111010", "122", "z"},};
+	{"01111010", "122", "z"},
+    };
     //</editor-fold>
-
+    
     public static String translate(String data, int from, int to) {
 	if (from == BINARY && data.length() != 8) {
 	    return null;
