@@ -5,6 +5,7 @@
  */
 package lab_redes;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -33,22 +34,30 @@ public class PanelArchivos extends JPanel {
     String loadedData;
     boolean isLoaded = false;
 
-    public void initPanelArchivo() {
-	panelArchivo = new JPanel();
-	panelArchivo.setSize(500, 500);
-	panelArchivo.setLocation(500, 0);
-	panelArchivo.setLayout(null);
+    public PanelArchivos() {
+	setBounds(Tools.getModuleSize(2));
+	setLayout(null);
+	setOpaque(true);
+	setBorder(BorderFactory.createLineBorder(Color.black, 2, true));
+	setBackground(new Color(209, 233, 249));
+
+	init();
+
+	setVisible(false);
+    }
+
+    public void init() {
 
 	JLabel label1 = new JLabel("Archivo a cargar:");
-	label1.setSize(400, 40);
-	label1.setLocation(30, 0);
-	panelArchivo.add(label1);
+	label1.setSize(400, 20);
+	label1.setLocation(20, 10);
+	add(label1);
 
 	fileLocation = new JTextField();
-	fileLocation.setSize(280, 40);
+	fileLocation.setSize(350, 40);
 	fileLocation.setLocation(20, 30);
 	fileLocation.setEditable(false);
-	panelArchivo.add(fileLocation);
+	add(fileLocation);
 
 	browseBtn = new JButton("Examinar");
 	browseBtn.addActionListener(new ActionListener() {
@@ -57,27 +66,25 @@ public class PanelArchivos extends JPanel {
 		openFile();
 	    }
 	});
-	browseBtn.setSize(150, 40);
-	browseBtn.setLocation(500 - 180, 30);
-	panelArchivo.add(browseBtn);
+	browseBtn.setSize(Tools.largeBtnDims());
+	browseBtn.setLocation(getWidth()-20-Tools.largeBtnDims().width, 30);
+	add(browseBtn);
 
 	JLabel label2 = new JLabel("Informacion cargada:");
-	label2.setSize(400, 40);
-	label2.setLocation(30, 70);
-	panelArchivo.add(label2);
+	label2.setSize(400, 20);
+	label2.setLocation(20, 80);
+	add(label2);
 
 	dataDisplay = new JTextArea();
-	dataDisplay.setSize(450, 110);
+	dataDisplay.setSize(460, 100);
 	dataDisplay.setLocation(20, 100);
-	panelArchivo.add(dataDisplay);
-
-	add(panelArchivo);
+	add(dataDisplay);
     }
 
     public void openFile() {
 	fc = new JFileChooser(openedFile);
 	FileNameExtensionFilter filter = new FileNameExtensionFilter(
-		"Archivos .txt", "txt");
+		Lab_Redes.getFileDescription(), Lab_Redes.getInputFileFormat());
 	fc.setFileFilter(filter);
 
 	int returnVal = fc.showOpenDialog(this);

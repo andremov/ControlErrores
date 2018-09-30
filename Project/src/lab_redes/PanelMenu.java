@@ -7,7 +7,6 @@ package lab_redes;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import javax.swing.*;
 
 /**
@@ -27,122 +26,124 @@ public class PanelMenu extends JPanel {
 
     JLabel dispProceso;
     JLabel dispModo;
-    
 
-    public void PanelMenu() {
-
-	int btnH = 40;
-	int btnL = 100;
-	int marg = 10;
-
-	int x1 = 20;
-	int x2 = x1 + btnL + marg;
-
-	int y1 = 10;
-
-	int panL = btnL * 2 + marg + x1 * 2;
-	int panH = btnH * 2 + marg + y1 * 2 + 50;
-
-	setSize(panL, panH);
-	setLocation(10, 10);
+    public PanelMenu() {
+	setBounds(Tools.getModuleSize(1));
 	setLayout(null);
 	setOpaque(true);
 	setBorder(BorderFactory.createLineBorder(Color.black, 2, true));
 	setBackground(new Color(209, 233, 249));
+	
+	init();
+
+	setVisible(false);
+    }
+
+    public void init() {
+	
+	int marg = 10;
+
+	int x1 = 20;
+	int y1 = 10;
 
 	dispProceso = new JLabel("Proceso seleccionado: N/A");
-	dispProceso.setSize(btnL * 2 + marg, btnH / 2);
+	dispProceso.setSize(getWidth()-20,20);
 	dispProceso.setLocation(x1, y1);
 	add(dispProceso);
 
 	dispModo = new JLabel("Modo seleccionado: N/A");
-	dispModo.setSize(btnL * 2 + marg, btnH / 2);
-	dispModo.setLocation(x1, y1 + btnH / 2);
+	dispModo.setSize(getWidth()-20,20);
+	dispModo.setLocation(x1, y1 + 20);
 	add(dispModo);
 
 	y1 = 50;
-	int y2 = y1 + btnH + marg;
+	int y2 = y1 + Tools.largeBtnDims().height + marg;
+	int x2 = x1 + Tools.largeBtnDims().width + marg;
 
 	corregirBtn = new JButton("Corrección");
-	corregirBtn.setSize(btnL, btnH);
+	corregirBtn.setSize(Tools.largeBtnDims());
 	corregirBtn.setLocation(x1, y1);
-	corregirBtn.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		if (Lab_Redes.modo == -1) {
-		    dispModo.setText("Modo seleccionado: Envío");
-		    Lab_Redes.modo = 0;
-		    enviarBtn.setEnabled(false);
-		}
-
-		corregirBtn.setEnabled(false);
-		detectarBtn.setEnabled(true);
-		dispProceso.setText("Proceso seleccionado: Corrección");
-		Lab_Redes.modo %= 2;
+	corregirBtn.addActionListener((ActionEvent e) -> {
+	    if (Lab_Redes.modo == -1) {
+		dispModo.setText("Modo seleccionado: Envío");
+		Lab_Redes.modo = 0;
+		enviarBtn.setEnabled(false);
 	    }
+	    
+	    corregirBtn.setEnabled(false);
+	    detectarBtn.setEnabled(true);
+	    
+	    dispProceso.setText("Proceso seleccionado: Corrección");
+	    
+	    Lab_Redes.modo %= 2;
+	    
+	    Lab_Redes.main.updateUI();
 	});
 	add(corregirBtn);
 
 	detectarBtn = new JButton("Detección");
-	detectarBtn.setSize(btnL, btnH);
+	detectarBtn.setSize(Tools.largeBtnDims());
 	detectarBtn.setLocation(x2, y1);
-	detectarBtn.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		if (Lab_Redes.modo == -1) {
-		    dispModo.setText("Modo seleccionado: Envío");
-		    Lab_Redes.modo = 2;
-		}
-
-		corregirBtn.setEnabled(true);
-		detectarBtn.setEnabled(false);
-		dispProceso.setText("Proceso seleccionado: Detección");
-		Lab_Redes.modo %= 2;
-		Lab_Redes.modo += 2;
+	detectarBtn.addActionListener((ActionEvent e) -> {
+	    if (Lab_Redes.modo == -1) {
+		dispModo.setText("Modo seleccionado: Envío");
+		Lab_Redes.modo = 2;
+		enviarBtn.setEnabled(false);
 	    }
+	    
+	    corregirBtn.setEnabled(true);
+	    detectarBtn.setEnabled(false);
+	    
+	    dispProceso.setText("Proceso seleccionado: Detección");
+	    
+	    Lab_Redes.modo %= 2;
+	    Lab_Redes.modo += 2;
+	    
+	    Lab_Redes.main.updateUI();
 	});
 	add(detectarBtn);
 
 	enviarBtn = new JButton("Enviar");
-	enviarBtn.setSize(btnL, btnH);
+	enviarBtn.setSize(Tools.largeBtnDims());
 	enviarBtn.setLocation(x1, y2);
-	enviarBtn.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		if (Lab_Redes.modo == -1) {
-		    dispProceso.setText("Proceso seleccionado: Corrección");
-		    corregirBtn.setEnabled(false);
-		    Lab_Redes.modo = 0;
-		}
-
-		recibirBtn.setEnabled(true);
-		enviarBtn.setEnabled(false);
-		dispModo.setText("Modo seleccionado: Envío");
-		Lab_Redes.modo -= Lab_Redes.modo % 2;
+	enviarBtn.addActionListener((ActionEvent e) -> {
+	    if (Lab_Redes.modo == -1) {
+		dispProceso.setText("Proceso seleccionado: Corrección");
+		corregirBtn.setEnabled(false);
+		Lab_Redes.modo = 0;
 	    }
+	    
+	    recibirBtn.setEnabled(true);
+	    enviarBtn.setEnabled(false);
+	    
+	    dispModo.setText("Modo seleccionado: Envío");
+	    
+	    Lab_Redes.modo -= Lab_Redes.modo % 2;
+	    
+	    Lab_Redes.main.updateUI();
 	});
 	add(enviarBtn);
 
 	recibirBtn = new JButton("Recibir");
-	recibirBtn.setSize(btnL, btnH);
+	recibirBtn.setSize(Tools.largeBtnDims());
 	recibirBtn.setLocation(x2, y2);
-	recibirBtn.addActionListener(new ActionListener() {
-	    @Override
-	    public void actionPerformed(ActionEvent e) {
-		if (Lab_Redes.modo == -1) {
-		    dispProceso.setText("Proceso seleccionado: Corrección");
-		    corregirBtn.setEnabled(false);
-		    Lab_Redes.modo = 1;
-		}
-
-		recibirBtn.setEnabled(false);
-		enviarBtn.setEnabled(true);
-		dispModo.setText("Modo seleccionado: Recepción");
-		Lab_Redes.modo -= Lab_Redes.modo % 2;
-		Lab_Redes.modo += 1;
+	recibirBtn.addActionListener((ActionEvent e) -> {
+	    if (Lab_Redes.modo == -1) {
+		dispProceso.setText("Proceso seleccionado: Corrección");
+		corregirBtn.setEnabled(false);
+		Lab_Redes.modo = 1;
 	    }
+	    
+	    recibirBtn.setEnabled(false);
+	    enviarBtn.setEnabled(true);
+	    
+	    dispModo.setText("Modo seleccionado: Recepción");
+	    
+	    Lab_Redes.modo -= Lab_Redes.modo % 2;
+	    Lab_Redes.modo += 1;
+	    
+	    Lab_Redes.main.updateUI();
 	});
 	add(recibirBtn);
-
     }
 }
