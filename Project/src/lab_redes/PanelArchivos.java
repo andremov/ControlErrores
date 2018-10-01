@@ -48,15 +48,16 @@ public class PanelArchivos extends JPanel {
 	setVisible(false);
     }
 
-    public void init() {
-
+    private void init() {
+	fc = new JFileChooser();
+	
 	JLabel label1 = new JLabel("Archivo a cargar:");
 	label1.setSize(400, 20);
 	label1.setLocation(20, 10);
 	add(label1);
 
 	fileLocation = new JTextField();
-	fileLocation.setSize(350, 40);
+	fileLocation.setSize(365, 40);
 	fileLocation.setLocation(20, 30);
 	fileLocation.setEditable(false);
 	add(fileLocation);
@@ -78,21 +79,21 @@ public class PanelArchivos extends JPanel {
 	add(label2);
 
 	dataDisplay = new JTextArea();
-	dataDisplay.setSize(460, 100);
+	dataDisplay.setSize(475, 100);
 	dataDisplay.addCaretListener(new CaretListener() {
 	    @Override
 	    public void caretUpdate(CaretEvent e) {
-		
+		Lab_Redes.main.updateInputText(dataDisplay.getText());
 	    }
 	});
 	dataDisplay.setLocation(20, 100);
 	add(dataDisplay);
     }
 
-    public void openFile() {
-	fc = new JFileChooser(openedFile);
+    private void openFile() {
 	FileNameExtensionFilter filter = new FileNameExtensionFilter(
-		Lab_Redes.getFileDescription(), Lab_Redes.getInputFileFormat());
+		Tools.getFileDescription(), Tools.getInputFileFormat());
+	fc.setCurrentDirectory(openedFile);
 	fc.setFileFilter(filter);
 
 	int returnVal = fc.showOpenDialog(this);

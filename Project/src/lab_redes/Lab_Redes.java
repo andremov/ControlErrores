@@ -24,67 +24,33 @@ public class Lab_Redes extends JFrame {
      */
     public static int modo = -1;
 
-    public static String rawText;
-    public static String binaryText;
-    public static String codedText;
-
-    public static void rawToBinary() {
-	String raw = rawText;
-	for (int i = 0; i < Tools.dictionary.length; i++) {
-	    String asciiRep = Tools.dictionary[i][Tools.ASCII];
-	    asciiRep = (asciiRep.equals(".") ? "\\." : asciiRep);
-	    raw = raw.replaceAll(asciiRep, Tools.dictionary[i][Tools.BINARY]);
-	}
-	binaryText = (raw.replaceAll("(\\d{8})", "$1" + "\n")).substring(0, binaryText.length() - 2);
-    }
-
-    public static void binaryToRaw() {
-	String bin = binaryText;
-	for (int i = 0; i < Tools.dictionary.length; i++) {
-	    String asciiRep = Tools.dictionary[i][Tools.ASCII];
-	    bin = bin.replaceAll(Tools.dictionary[i][Tools.BINARY], asciiRep);
-	}
-	rawText = bin.replaceAll("\\n", "");
-    }
-
     public static void main(String[] args) {
 	main = new Lab_Redes();
-	binaryToRaw();
+//	String start = "testing binary; please wait...";
+//	System.out.println(start);
+//	try {
+//	String b = Tools.translateAll(start, Tools.ASCII, Tools.BINARY);
+//	System.out.println(b);
+//	String end = Tools.translateAll(b, Tools.BINARY, Tools.ASCII);
+//	System.out.println(end);
+//	} catch (Exception e) {
+//	    e.printStackTrace();
+//	}
     }
 
-    public static String getFileDescription() {
-	if (modo % 2 == 0) {
-	    return "Archivos ASCII";
-	} else {
-	    return "Archivos codificado";
-	}
-    }
-
-    public static String getInputFileFormat() {
-	if (modo % 2 == 0) {
-	    return "txt";
-	} else if (modo == 1) {
-	    return "ham";
-	} else {
-	    return "crc";
-	}
-    }
-
-    public static String getOutputFileFormat() {
-	if (modo % 2 == 1) {
-	    return "txt";
-	} else if (modo == 0) {
-	    return "ham";
-	} else {
-	    return "crc";
-	}
-    }
-
+    //////////////////////////////////////////////////////////////////////////////
+    //					MAIN WINDOW				//
+    //////////////////////////////////////////////////////////////////////////////
     JPanel menu;
     JPanel archivo;
+    JPanel polinomio;
+
+    private String asciiText;
+    private String binaryText;
+    private String codedText;
 
     public Lab_Redes() {
-	setSize(1000, 900);
+	setSize(800, 900);
 	setDefaultCloseOperation(EXIT_ON_CLOSE);
 	setLocationRelativeTo(null);
 	setLayout(null);
@@ -105,15 +71,25 @@ public class Lab_Redes extends JFrame {
 	archivo = new PanelArchivos();
 	add(archivo);
 
-	add(new Placeholder(3));
+	polinomio = new PanelPolinomio();
+	add(polinomio);
+
 	add(new Placeholder(4));
-	add(new Placeholder(5));
     }
 
     public void updateUI() {
 	if (modo != -1 && !archivo.isVisible()) {
 	    archivo.setVisible(true);
 	}
+    }
+
+    public void updateInputText(String inputText) {
+	if (modo % 2 == 0) {
+	    asciiText = inputText;
+	} else {
+	    codedText = inputText;
+	}
+	
     }
 
 }
