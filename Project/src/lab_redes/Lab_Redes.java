@@ -89,7 +89,6 @@ public class Lab_Redes extends JFrame {
 	} else {
 	    codedText = inputText;
 	}
-	
     }
 
 }

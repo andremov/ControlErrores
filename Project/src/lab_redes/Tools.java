@@ -80,18 +80,21 @@ public abstract class Tools {
 
     public static String translateAll(String original, int from, int to) throws Exception {
 	String param = original;
-	
-	
+
 	if (from == BINARY) {
-	    param=param.replaceAll("\\s","");
-	    param=param.replaceAll("(\\d{8})","$1"+"\n");
+	    param = param.replaceAll("\\s", "");
+	    param = param.replaceAll("(\\d{8})", "$1" + "\n");
 	}
-	
+
 	if (from == ASCII) {
-	    param = param.replaceAll("\\n","");
-	    param=param.replaceAll("(.)","$1"+"\n");
+	    param = param.replaceAll("\\n", "");
+	    param = param.replaceAll("(.)", "$1" + "\n");
 	}
-	
+
+	if (!validateAll(from, original)) {
+	    throw new Exception("Error en el archivo.");
+	}
+
 	for (int i = 0; i < Tools.dictionary.length; i++) {
 	    String find = Tools.dictionary[i][from];
 	    find = (find.equals(".") ? "\\." : find);
@@ -99,28 +102,40 @@ public abstract class Tools {
 	}
 
 	String returnValue = "";
-	if (to == BINARY) {
-	    returnValue = param.replaceAll("(\\d{128})", "$1" + "\n");
-	}
-	if (to == ASCII) {
-	    returnValue = param.replaceAll("\\n", "");
-	}
+//	if (to == BINARY) {
+//	    returnValue = param.replaceAll("(\\d{128})", "$1" + "\n");
+//	}
+//	if (to == ASCII) {
+//	    returnValue = param.replaceAll("\\n", "");
+//	}
 
 	return returnValue;
     }
 
-    public static boolean isValid(int format, String data) {
+    public static boolean validateAll(int format, String data) {
+	String[] dataArray = data.split("\\n");
+	boolean returnValue = true;
+	int i = 0;
+	while (i < dataArray.length && returnValue == true) {
+	    returnValue = returnValue && validateItem(format, dataArray[i]);
+	    i++;
+	}
+	return returnValue;
+    }
+
+    public static boolean validateItem(int format, String data) {
 	switch (format) {
 	    case BINARY:
-		if (data.length() != 8)
+		if (data.length() != 8) {
 		    return false;
-		
+		}
+
 		return true;
 	    case ASCII:
-		if (data.length() != 1)
+		if (data.length() != 1) {
 		    return false;
-		
-		
+		}
+
 		return true;
 	    default:
 		return false;
@@ -156,27 +171,6 @@ public abstract class Tools {
 	}
     }
 
-
-    public static String translate(String data, int from, int to) throws Exception {
-	if (isValid(from,data)) {
-	    throw new Exception("Error en archivo!"); 
-	}
-
-	int id = -1;
-	for (int i = 0; i < dictionary.length; i++) {
-	    if (dictionary[i][from].equals(data)) {
-		id = i;
-	    }
-	}
-
-	if (id == -1) {
-	    return null;
-	}
-
-	return dictionary[id][to];
-
-    }
-
     public static Dimension largeBtnDims() {
 	return new Dimension(100, 40);
     }
@@ -186,11 +180,11 @@ public abstract class Tools {
 	    case 1:
 		return new Rectangle(10, 10, 250, 150);
 	    case 2:
-		return new Rectangle(270, 10, 515, 210);
+		return new Rectangle(270, 10, 515, 230);
 	    case 3:
-		return new Rectangle(10, 170, 250, 50);
+		return new Rectangle(10, 170, 250, 70);
 	    case 4:
-		return new Rectangle(10, 230, 775, 190);
+		return new Rectangle(10, 250, 775, 190);
 	    default:
 		return null;
 	}

@@ -79,7 +79,7 @@ public class PanelArchivos extends JPanel {
 	add(label2);
 
 	dataDisplay = new JTextArea();
-	dataDisplay.setSize(475, 100);
+	dataDisplay.setSize(475, 120);
 	dataDisplay.addCaretListener(new CaretListener() {
 	    @Override
 	    public void caretUpdate(CaretEvent e) {
