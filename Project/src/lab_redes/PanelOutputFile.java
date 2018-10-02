@@ -47,7 +47,7 @@ public class PanelOutputFile extends JPanel {
 
     private void init() {
 	fc = new JFileChooser();
-	
+
 	JLabel label1 = new JLabel("Archivo para guardar:");
 	label1.setSize(400, 20);
 	label1.setLocation(20, 10);
@@ -67,7 +67,7 @@ public class PanelOutputFile extends JPanel {
 	    }
 	});
 	browseBtn.setSize(Tools.largeBtnDims());
-	browseBtn.setLocation(getWidth()-20-Tools.largeBtnDims().width, 30);
+	browseBtn.setLocation(getWidth() - 20 - Tools.largeBtnDims().width, 30);
 	add(browseBtn);
 
 	JLabel label2 = new JLabel("Informacion para guardar en archivo:");
@@ -77,16 +77,18 @@ public class PanelOutputFile extends JPanel {
 
 	dataDisplay = new JTextArea();
 	dataDisplay.setSize(475, 120);
-	dataDisplay.addCaretListener(new CaretListener() {
-	    @Override
-	    public void caretUpdate(CaretEvent e) {
-		Lab_Redes.main.updateInputText(dataDisplay.getText());
-	    }
-	});
 	dataDisplay.setLocation(20, 100);
 	add(dataDisplay);
     }
 
+    public void updateOutputText(String text) {
+	dataDisplay.setText(text);
+    }
+
+    public void clearDisplay() {
+	dataDisplay.setText("");
+    }
+    
     private void openFile() {
 	FileNameExtensionFilter filter = new FileNameExtensionFilter(
 		Tools.getFileDescription(), Tools.getInputFileFormat());
@@ -105,11 +107,11 @@ public class PanelOutputFile extends JPanel {
 		    for (int i = 0; i < text.size(); i++) {
 			loadedData += text.get(i) + "\n";
 		    }
-		    
+
 		    dataDisplay.setText(loadedData);
 		    isLoaded = true;
 		} catch (Exception e) {
-		    
+
 		}
 	    }
 	}

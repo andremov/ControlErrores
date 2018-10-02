@@ -17,7 +17,7 @@ import javax.swing.JTextField;
  */
 public class PanelPolynomial extends JPanel {
     
-    JTextField poli;
+    JTextField poly;
     
     public PanelPolynomial() {
 	setBounds(Tools.getModuleSize(3));
@@ -30,6 +30,10 @@ public class PanelPolynomial extends JPanel {
 
 	setVisible(false);
     }
+
+    public void clearDisplay() {
+	poly.setText("");
+    }
     
     private void init() {
 	JLabel label1 = new JLabel("Polinomio Generador:");
@@ -37,9 +41,9 @@ public class PanelPolynomial extends JPanel {
 	label1.setSize(getWidth()-20,20);
 	add(label1);
 	
-	poli = new JTextField();
-	poli.setLocation(10,30);
-	poli.setSize(getWidth()-20,30);
-	add(poli);
+	poly = new JTextField();
+	poly.setLocation(10,30);
+	poly.setSize(getWidth()-20,30);
+	add(poly);
     }
 }

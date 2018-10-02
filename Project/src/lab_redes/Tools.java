@@ -103,19 +103,18 @@ public abstract class Tools {
 
 	param = param.replaceAll("\\n", "");
 
-	String returnValue = "";
-	if (to == BINARY) {
-	    int l = param.length();
-	    returnValue = param.replaceAll("(\\d{128})", "$1" + "\n");
-	    if (l % 128 == 0) {
-		returnValue = returnValue.substring(0, returnValue.length() - 1);
-	    }
-	}
-	if (to == ASCII) {
-	    returnValue = param.replaceAll("\\n", "");
-	}
-
-	return returnValue;
+//	String returnValue = "";
+//	if (to == BINARY) {
+//	    int l = param.length();
+//	    returnValue = param.replaceAll("(\\d{128})", "$1" + "\n");
+//	    if (l % 128 == 0) {
+//		returnValue = returnValue.substring(0, returnValue.length() - 1);
+//	    }
+//	}
+//	if (to == ASCII) {
+//	    returnValue = param.replaceAll("\\n", "");
+//	}
+	return param;
     }
 
     public static boolean validateAll(int format, String data) {
@@ -130,9 +129,16 @@ public abstract class Tools {
     }
 
     public static boolean validateItem(int format, String data) {
+	//TODO: FIX THIS
 	switch (format) {
 	    case BINARY:
 		if (data.length() != 8) {
+		    return false;
+		}
+		if (data.contains("(\\D)")) {
+		    return false;
+		}
+		if (data.contains("[2-9]")) {
 		    return false;
 		}
 
@@ -141,8 +147,31 @@ public abstract class Tools {
 		if (data.length() != 1) {
 		    return false;
 		}
-
-		return true;
+		if (data.contains("\\d")) {
+		    System.out.println("2");
+		    return false;
+		}
+		if (data.contains("\\a")) {
+		    System.out.println("!");
+		    return true;
+		}
+		if (data.contains(" ")) {
+		    return true;
+		}
+		if (data.contains(",")) {
+		    return true;
+		}
+		if (data.contains("\\.")) {
+		    return true;
+		}
+		if (data.contains(":")) {
+		    return true;
+		}
+		if (data.contains(";")) {
+		    return true;
+		}
+		
+		return false;
 	    default:
 		return false;
 	}
@@ -203,7 +232,7 @@ public abstract class Tools {
 	for (int i = 0; i < array.length; i++) {
 	    result += array[i] + (doNL ? "\n" : "");
 	}
-	return (doNL ? result.substring(0,result.length()-1) : result);
+	return (doNL ? result.substring(0, result.length() - 1) : result);
     }
 
     public static String[] splitCharacters(String source) {

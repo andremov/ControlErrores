@@ -23,12 +23,6 @@ public class Placeholder extends JPanel{
 	setOpaque(true);
 	setBorder(BorderFactory.createLineBorder(Color.black, 2, true));
 	setBackground(new Color(172, 195, 210));
-	
-	JLabel label = new JLabel("Module Number: "+moduleNumber);
-	label.setLocation(10,10);
-	label.setSize(200,30);
-	label.setFont(new Font("Arial",Font.BOLD,20));
-	add(label);
 
 	setVisible(true);
     }

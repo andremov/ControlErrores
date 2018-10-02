@@ -25,32 +25,8 @@ public class Lab_Redes extends JFrame {
 
     public static void main(String[] args) {
 	main = new Lab_Redes();
-
-//	String start = "testing binary; please wait.....";
-//	System.out.println(start);
-//	main.updateInputText(start);
-	System.out.println("Sending:");
-	String m = "01000010";
-	System.out.println(m);
-	
-	System.out.println("Encoded as:");
-	String a = Hamming.encode(m);
-	System.out.println(a);
-	
-	System.out.println("Error!");
-	a = a.substring(0,3)+((Integer.parseInt(""+a.charAt(3))+1)%2)+a.substring(4);
-	System.out.println(a);
-	
-	System.out.println("Translated to:");
-	String b = Hamming.decode(a);
-	System.out.println(b);
-	
-	main.dispose();
     }
 
-    //////////////////////////////////////////////////////////////////////////////
-    //					MAIN WINDOW				//
-    //////////////////////////////////////////////////////////////////////////////
     JPanel menu;
     JPanel inputFile;
     JPanel outputFile;
@@ -61,20 +37,20 @@ public class Lab_Redes extends JFrame {
     private String polynomialText;
 
     public Lab_Redes() {
-//	setSize(800, 520);
+	setSize(800, 520);
 	setDefaultCloseOperation(EXIT_ON_CLOSE);
-//	setLocationRelativeTo(null);
-//	setLayout(null);
-//	setResizable(false);
-//	setTitle("Laboratorio de Redes");
-//
-//	init();
-//	setVisible(true);
-//	menu.setVisible(true);
+	setLocationRelativeTo(null);
+	setLayout(null);
+	setResizable(false);
+	setTitle("Laboratorio de Redes");
+
+	init();
+	setVisible(true);
+	menu.setVisible(true);
     }
 
     public void init() {
-	
+
 	menu = new PanelMenu();
 	add(menu);
 
@@ -83,7 +59,7 @@ public class Lab_Redes extends JFrame {
 
 	polynomial = new PanelPolynomial();
 	add(polynomial);
-	
+
 	outputFile = new PanelOutputFile();
 	add(outputFile);
 
@@ -91,31 +67,61 @@ public class Lab_Redes extends JFrame {
 	add(new Placeholder(3));
 	add(new Placeholder(4));
 	add(new Placeholder(5));
+
+	this.inputText = "";
+	this.outputText = "";
+	this.polynomialText = "";
     }
 
     public void updateUI() {
 	inputFile.setVisible(modo != MODO_ERROR);
 	outputFile.setVisible(modo != MODO_ERROR);
 	polynomial.setVisible(modo > 1);
+	((PanelInputFile) inputFile).clearDisplay();
+	((PanelOutputFile) outputFile).clearDisplay();
+	((PanelPolynomial) polynomial).clearDisplay();
+
+	this.inputText = "";
+	this.outputText = "";
+	this.polynomialText = "";
     }
 
     public void updateInputText(String inputText) {
-	switch (modo) {
-	    case MODO_CORRECCION_ENVIO:
-		this.inputText = inputText;
-		break;
-	    case MODO_CORRECCION_RECEPCION:
-		this.inputText = inputText;
-		break;
-	    case MODO_DETECCION_ENVIO:
-		this.inputText = inputText;
-		this.outputText = CRC.encode(this.inputText, polynomialText);
-		break;
-	    case MODO_DETECCION_RECEPCION:
-		this.inputText = inputText;
-		this.outputText = CRC.decode(this.inputText, polynomialText);
-		break;
+	this.outputText = "";
+	
+	if (inputText.isEmpty()) {
+	    ((PanelInputFile) inputFile).setWarning(false);
+	    return;
 	}
+	
+	this.inputText = inputText;
+	String middleMan;
+	
+	try {
+	    switch (modo) {
+		case MODO_CORRECCION_ENVIO:
+		    middleMan = Tools.translateAll(inputText, Tools.ASCII, Tools.BINARY);
+		    middleMan = middleMan.replaceAll("(\\d{8})", "$1" + "\n");
+		    middleMan = middleMan.substring(0, middleMan.length() - 1);
+		    this.outputText = Hamming.encode(middleMan);
+		    break;
+		case MODO_CORRECCION_RECEPCION:
+		    middleMan = Hamming.decode(this.inputText);
+		    middleMan = Tools.translateAll(middleMan, Tools.BINARY, Tools.ASCII);
+		    this.outputText = middleMan.replaceAll("\\n", "");
+		    break;
+		case MODO_DETECCION_ENVIO:
+		    this.outputText = CRC.encode(this.inputText, polynomialText);
+		    break;
+		case MODO_DETECCION_RECEPCION:
+		    this.outputText = CRC.decode(this.inputText, polynomialText);
+		    break;
+	    }
+	    ((PanelInputFile) inputFile).setWarning(false);
+	} catch (Exception e) {
+	    ((PanelInputFile) inputFile).setWarning(true);
+	}
+	((PanelOutputFile) outputFile).updateOutputText(this.outputText);
     }
 
 }
