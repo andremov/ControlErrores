@@ -15,11 +15,11 @@ import javax.swing.JTextField;
  *
  * @author Andrés Movilla
  */
-public class PanelPolinomio extends JPanel {
+public class PanelPolynomial extends JPanel {
     
     JTextField poli;
     
-    public PanelPolinomio() {
+    public PanelPolynomial() {
 	setBounds(Tools.getModuleSize(3));
 	setLayout(null);
 	setOpaque(true);

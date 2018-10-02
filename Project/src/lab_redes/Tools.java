@@ -85,13 +85,13 @@ public abstract class Tools {
 	    param = param.replaceAll("\\s", "");
 	    param = param.replaceAll("(\\d{8})", "$1" + "\n");
 	}
-
+	
 	if (from == ASCII) {
 	    param = param.replaceAll("\\n", "");
-	    param = param.replaceAll("(.)", "$1" + "\n");
+	    param = param.replaceAll("(.{1})", "$1" + "\n");
 	}
-
-	if (!validateAll(from, original)) {
+	
+	if (!validateAll(from, param)) {
 	    throw new Exception("Error en el archivo.");
 	}
 
@@ -100,14 +100,20 @@ public abstract class Tools {
 	    find = (find.equals(".") ? "\\." : find);
 	    param = param.replaceAll(find, Tools.dictionary[i][to]);
 	}
-
+	
+	param = param.replaceAll("\\n", "");
+	
 	String returnValue = "";
-//	if (to == BINARY) {
-//	    returnValue = param.replaceAll("(\\d{128})", "$1" + "\n");
-//	}
-//	if (to == ASCII) {
-//	    returnValue = param.replaceAll("\\n", "");
-//	}
+	if (to == BINARY) {
+	    int l = param.length();
+	    returnValue = param.replaceAll("(\\d{128})", "$1" + "\n");
+	    if (l % 128 == 0) {
+		returnValue = returnValue.substring(0,returnValue.length()-1);
+	    }
+	}
+	if (to == ASCII) {
+	    returnValue = param.replaceAll("\\n", "");
+	}
 
 	return returnValue;
     }

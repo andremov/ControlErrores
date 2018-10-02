@@ -20,7 +20,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author Andrés Movilla
  */
-public class PanelArchivos extends JPanel {
+public class PanelFiles extends JPanel {
 
     //////////////////////////////////////////////////////////////////////////////
     //			    PANEL DE CARGA DE ARCHIVO				//
@@ -36,7 +36,7 @@ public class PanelArchivos extends JPanel {
     String loadedData;
     boolean isLoaded = false;
 
-    public PanelArchivos() {
+    public PanelFiles() {
 	setBounds(Tools.getModuleSize(2));
 	setLayout(null);
 	setOpaque(true);
