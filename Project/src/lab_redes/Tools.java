@@ -201,16 +201,20 @@ public abstract class Tools {
     public static String joinStringArray(String[] array, boolean doNL) {
 	String result = "";
 	for (int i = 0; i < array.length; i++) {
-	    result += array[i] + (doNL ? "\\n" : "");
+	    result += array[i] + (doNL ? "\n" : "");
 	}
-	return result;
+	return (doNL ? result.substring(0,result.length()-1) : result);
     }
 
     public static String[] splitCharacters(String source) {
 	return source.split("(?!^)");
     }
-    
+
     public static String[] splitLines(String source) {
 	return source.split("\\n");
+    }
+
+    public static double log2(double a) {
+	return Math.log10(a) / Math.log10(2);
     }
 }

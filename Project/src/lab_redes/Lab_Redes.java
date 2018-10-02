@@ -29,8 +29,22 @@ public class Lab_Redes extends JFrame {
 //	String start = "testing binary; please wait.....";
 //	System.out.println(start);
 //	main.updateInputText(start);
-	Hamming.encode("01000010");
-
+	System.out.println("Sending:");
+	String m = "01000010";
+	System.out.println(m);
+	
+	System.out.println("Encoded as:");
+	String a = Hamming.encode(m);
+	System.out.println(a);
+	
+	System.out.println("Error!");
+	a = a.substring(0,3)+((Integer.parseInt(""+a.charAt(3))+1)%2)+a.substring(4);
+	System.out.println(a);
+	
+	System.out.println("Translated to:");
+	String b = Hamming.decode(a);
+	System.out.println(b);
+	
 	main.dispose();
     }
 
