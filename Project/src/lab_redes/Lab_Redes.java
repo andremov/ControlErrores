@@ -29,10 +29,9 @@ public class Lab_Redes extends JFrame {
 //	String start = "testing binary; please wait.....";
 //	System.out.println(start);
 //	main.updateInputText(start);
-//	System.out.println(CRC.encode("1001", "1011"));
-//	System.out.println(CRC.decode("1001110", "1011"));
-//	System.out.println(CRC.decode("1000110", "1011"));
-//	main.dispose();
+	Hamming.encode("01000010");
+
+	main.dispose();
     }
 
     //////////////////////////////////////////////////////////////////////////////
@@ -48,16 +47,16 @@ public class Lab_Redes extends JFrame {
     private String polynomialText;
 
     public Lab_Redes() {
-	setSize(800, 520);
+//	setSize(800, 520);
 	setDefaultCloseOperation(EXIT_ON_CLOSE);
-	setLocationRelativeTo(null);
-	setLayout(null);
-	setResizable(false);
-	setTitle("Laboratorio de Redes");
-
-	init();
-	setVisible(true);
-	menu.setVisible(true);
+//	setLocationRelativeTo(null);
+//	setLayout(null);
+//	setResizable(false);
+//	setTitle("Laboratorio de Redes");
+//
+//	init();
+//	setVisible(true);
+//	menu.setVisible(true);
     }
 
     public void init() {

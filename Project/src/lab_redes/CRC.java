@@ -20,7 +20,7 @@ public abstract class CRC {
 	    return "";
 	}
 
-	String[] datawords = rawDatawords.split("\\n");
+	String[] datawords = Tools.splitLines(rawDatawords);
 	String[] codewords = new String[datawords.length];
 
 	for (int i = 0; i < datawords.length; i++) {
@@ -31,10 +31,7 @@ public abstract class CRC {
 	    codewords[i] = datawordDivide(datawords[i], polynomial, datawordLength);
 	}
 
-	String joinedCodewords = "";
-	for (int i = 0; i < codewords.length; i++) {
-	    joinedCodewords += codewords[i] + "\\n";
-	}
+	String joinedCodewords = Tools.joinStringArray(codewords, true);
 	joinedCodewords = joinedCodewords.substring(0, joinedCodewords.length() - 2);
 
 	return joinedCodewords;
@@ -49,7 +46,7 @@ public abstract class CRC {
 	    return "";
 	}
 
-	String[] codewords = rawCodewords.split("\\n");
+	String[] codewords = Tools.splitLines(rawCodewords);
 	String[] datawords = new String[codewords.length];
 
 	int numErrors = 0;
@@ -79,8 +76,8 @@ public abstract class CRC {
 
     private static String datawordDivide(String longerDataword, String polynomial, int datawordLength) {
 	String[] splitResponse = new String[datawordLength];
-	String[] splitData = longerDataword.split("(?!^)");
-	String[] splitPoly = polynomial.split("(?!^)");
+	String[] splitData = Tools.splitCharacters(longerDataword);
+	String[] splitPoly = Tools.splitCharacters(polynomial);
 
 	for (int i = 0; i < datawordLength; i++) {
 	    splitResponse[i] = splitData[i];
@@ -95,18 +92,9 @@ public abstract class CRC {
 	    }
 	}
 
-	String response = "";
-	for (int i = 0; i < splitResponse.length; i++) {
-	    response += splitResponse[i];
-	}
-
-	String remainder = "";
-	for (int i = 0; i < splitData.length; i++) {
-	    remainder += splitData[i];
-	}
+	String remainder = Tools.joinStringArray(splitData, false);
 	remainder = remainder.substring(remainder.length() - 3);
-	response += remainder;
-
-	return response;
+	
+	return Tools.joinStringArray(splitResponse, false)+remainder;
     }
 }

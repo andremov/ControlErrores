@@ -70,7 +70,7 @@ public class PanelOutputFile extends JPanel {
 	browseBtn.setLocation(getWidth()-20-Tools.largeBtnDims().width, 30);
 	add(browseBtn);
 
-	JLabel label2 = new JLabel("Informacion para guardar:");
+	JLabel label2 = new JLabel("Informacion para guardar en archivo:");
 	label2.setSize(400, 20);
 	label2.setLocation(20, 80);
 	add(label2);
