@@ -28,7 +28,7 @@ public class PanelPolynomial extends JPanel {
 	
 	init();
 
-	setVisible(true);
+	setVisible(false);
     }
     
     private void init() {

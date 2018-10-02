@@ -15,9 +15,6 @@ import javax.swing.*;
  */
 public class PanelMenu extends JPanel {
 
-    //////////////////////////////////////////////////////////////////////////////
-    //				    PANEL DE MENU				//
-    //////////////////////////////////////////////////////////////////////////////
     JButton corregirBtn;
     JButton detectarBtn;
 
@@ -64,7 +61,7 @@ public class PanelMenu extends JPanel {
 	corregirBtn.setSize(Tools.largeBtnDims());
 	corregirBtn.setLocation(x1, y1);
 	corregirBtn.addActionListener((ActionEvent e) -> {
-	    if (Lab_Redes.modo == -1) {
+	    if (Lab_Redes.modo == Lab_Redes.MODO_ERROR) {
 		dispModo.setText("Modo seleccionado: Envío");
 		Lab_Redes.modo = 0;
 		enviarBtn.setEnabled(false);
@@ -85,7 +82,7 @@ public class PanelMenu extends JPanel {
 	detectarBtn.setSize(Tools.largeBtnDims());
 	detectarBtn.setLocation(x2, y1);
 	detectarBtn.addActionListener((ActionEvent e) -> {
-	    if (Lab_Redes.modo == -1) {
+	    if (Lab_Redes.modo == Lab_Redes.MODO_ERROR) {
 		dispModo.setText("Modo seleccionado: Envío");
 		Lab_Redes.modo = 2;
 		enviarBtn.setEnabled(false);
@@ -107,7 +104,7 @@ public class PanelMenu extends JPanel {
 	enviarBtn.setSize(Tools.largeBtnDims());
 	enviarBtn.setLocation(x1, y2);
 	enviarBtn.addActionListener((ActionEvent e) -> {
-	    if (Lab_Redes.modo == -1) {
+	    if (Lab_Redes.modo == Lab_Redes.MODO_ERROR) {
 		dispProceso.setText("Proceso seleccionado: Corrección");
 		corregirBtn.setEnabled(false);
 		Lab_Redes.modo = 0;
@@ -128,7 +125,7 @@ public class PanelMenu extends JPanel {
 	recibirBtn.setSize(Tools.largeBtnDims());
 	recibirBtn.setLocation(x2, y2);
 	recibirBtn.addActionListener((ActionEvent e) -> {
-	    if (Lab_Redes.modo == -1) {
+	    if (Lab_Redes.modo == Lab_Redes.MODO_ERROR) {
 		dispProceso.setText("Proceso seleccionado: Corrección");
 		corregirBtn.setEnabled(false);
 		Lab_Redes.modo = 1;

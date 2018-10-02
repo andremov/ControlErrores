@@ -20,11 +20,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  *
  * @author Andrés Movilla
  */
-public class PanelFiles extends JPanel {
+public class PanelInputFile extends JPanel {
 
-    //////////////////////////////////////////////////////////////////////////////
-    //			    PANEL DE CARGA DE ARCHIVO				//
-    //////////////////////////////////////////////////////////////////////////////
     JFileChooser fc;
     JPanel panelArchivo;
     JButton browseBtn;
@@ -36,7 +33,7 @@ public class PanelFiles extends JPanel {
     String loadedData;
     boolean isLoaded = false;
 
-    public PanelFiles() {
+    public PanelInputFile() {
 	setBounds(Tools.getModuleSize(2));
 	setLayout(null);
 	setOpaque(true);
@@ -73,7 +70,7 @@ public class PanelFiles extends JPanel {
 	browseBtn.setLocation(getWidth()-20-Tools.largeBtnDims().width, 30);
 	add(browseBtn);
 
-	JLabel label2 = new JLabel("Informacion cargada:");
+	JLabel label2 = new JLabel("Informacion cargada de archivo:");
 	label2.setSize(400, 20);
 	label2.setLocation(20, 80);
 	add(label2);

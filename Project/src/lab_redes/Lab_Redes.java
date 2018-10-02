@@ -29,17 +29,18 @@ public class Lab_Redes extends JFrame {
 //	String start = "testing binary; please wait.....";
 //	System.out.println(start);
 //	main.updateInputText(start);
-	System.out.println(CRC.encode("1001", "1011"));
-	System.out.println(CRC.decode("1001110", "1011"));
-	System.out.println(CRC.decode("1000110", "1011"));
-	main.dispose();
+//	System.out.println(CRC.encode("1001", "1011"));
+//	System.out.println(CRC.decode("1001110", "1011"));
+//	System.out.println(CRC.decode("1000110", "1011"));
+//	main.dispose();
     }
 
     //////////////////////////////////////////////////////////////////////////////
     //					MAIN WINDOW				//
     //////////////////////////////////////////////////////////////////////////////
     JPanel menu;
-    JPanel file;
+    JPanel inputFile;
+    JPanel outputFile;
     JPanel polynomial;
 
     private String inputText;
@@ -47,35 +48,42 @@ public class Lab_Redes extends JFrame {
     private String polynomialText;
 
     public Lab_Redes() {
-//	setSize(800, 900);
+	setSize(800, 520);
 	setDefaultCloseOperation(EXIT_ON_CLOSE);
-//	setLocationRelativeTo(null);
-//	setLayout(null);
-//	setResizable(false);
-//	setTitle("Laboratorio de Redes");
+	setLocationRelativeTo(null);
+	setLayout(null);
+	setResizable(false);
+	setTitle("Laboratorio de Redes");
 
-//	init();
-//	setVisible(true);
-//	menu.setVisible(true);
+	init();
+	setVisible(true);
+	menu.setVisible(true);
     }
 
     public void init() {
+	
 	menu = new PanelMenu();
 	add(menu);
 
-	file = new PanelFiles();
-	add(file);
+	inputFile = new PanelInputFile();
+	add(inputFile);
 
 	polynomial = new PanelPolynomial();
 	add(polynomial);
+	
+	outputFile = new PanelOutputFile();
+	add(outputFile);
 
+	add(new Placeholder(2));
+	add(new Placeholder(3));
 	add(new Placeholder(4));
+	add(new Placeholder(5));
     }
 
     public void updateUI() {
-	if (modo != -1 && !file.isVisible()) {
-	    file.setVisible(true);
-	}
+	inputFile.setVisible(modo != MODO_ERROR);
+	outputFile.setVisible(modo != MODO_ERROR);
+	polynomial.setVisible(modo > 1);
     }
 
     public void updateInputText(String inputText) {

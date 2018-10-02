@@ -190,7 +190,9 @@ public abstract class Tools {
 	    case 3:
 		return new Rectangle(10, 170, 250, 70);
 	    case 4:
-		return new Rectangle(10, 250, 775, 190);
+		return new Rectangle(270, 250, 515, 230);
+	    case 5:
+		return new Rectangle(10, 250, 250, 230);
 	    default:
 		return null;
 	}
