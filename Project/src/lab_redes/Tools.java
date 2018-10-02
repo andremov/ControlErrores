@@ -171,7 +171,7 @@ public abstract class Tools {
 		    return true;
 		}
 		
-		return false;
+		return true;
 	    default:
 		return false;
 	}
