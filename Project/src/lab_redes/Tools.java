@@ -91,7 +91,7 @@ public abstract class Tools {
 	    param = param.replaceAll("(.{1})", "$1" + "\n");
 	}
 
-	if (!validateAll(from, param)) {
+	if (!validate(from, param)) {
 	    throw new Exception("Error en el archivo.");
 	}
 
@@ -100,82 +100,35 @@ public abstract class Tools {
 	    find = (find.equals(".") ? "\\." : find);
 	    param = param.replaceAll(find, Tools.dictionary[i][to]);
 	}
-
+	if (from == BINARY) {
+	    param = param.replaceAll("[\\d]+", "?");
+	}
 	param = param.replaceAll("\\n", "");
 
-//	String returnValue = "";
-//	if (to == BINARY) {
-//	    int l = param.length();
-//	    returnValue = param.replaceAll("(\\d{128})", "$1" + "\n");
-//	    if (l % 128 == 0) {
-//		returnValue = returnValue.substring(0, returnValue.length() - 1);
-//	    }
-//	}
-//	if (to == ASCII) {
-//	    returnValue = param.replaceAll("\\n", "");
-//	}
 	return param;
     }
 
-    public static boolean validateAll(int format, String data) {
-	String[] dataArray = data.split("\\n");
-	boolean returnValue = true;
-	int i = 0;
-	while (i < dataArray.length && returnValue == true) {
-	    returnValue = returnValue && validateItem(format, dataArray[i]);
-	    i++;
-	}
-	return returnValue;
-    }
-
-    public static boolean validateItem(int format, String data) {
-	//TODO: FIX THIS
+    public static boolean validate(int format, String pData) {
+	String data = pData.replace("\n", "");
 	switch (format) {
 	    case BINARY:
-		if (data.length() != 8) {
+		if (data.length() % 8 != 0) {
 		    return false;
 		}
-		if (data.contains("(\\D)")) {
-		    return false;
+		if (data.matches("[01]+")) {
+		    return true;
 		}
-		if (data.contains("[2-9]")) {
+
+		return false;
+	    case ASCII:
+		if (java.util.regex.Pattern.compile("[^a-zA-Z ,.;:]").matcher(data).find()) {
 		    return false;
 		}
 
-		return true;
-	    case ASCII:
-		if (data.length() != 1) {
-		    return false;
-		}
-		if (data.contains("\\d")) {
-		    System.out.println("2");
-		    return false;
-		}
-		if (data.contains("\\a")) {
-		    System.out.println("!");
-		    return true;
-		}
-		if (data.contains(" ")) {
-		    return true;
-		}
-		if (data.contains(",")) {
-		    return true;
-		}
-		if (data.contains("\\.")) {
-		    return true;
-		}
-		if (data.contains(":")) {
-		    return true;
-		}
-		if (data.contains(";")) {
-		    return true;
-		}
-		
 		return true;
 	    default:
 		return false;
 	}
-
     }
 
     public static String getFileDescription() {
@@ -232,6 +185,7 @@ public abstract class Tools {
 	for (int i = 0; i < array.length; i++) {
 	    result += array[i] + (doNL ? "\n" : "");
 	}
+
 	return (doNL ? result.substring(0, result.length() - 1) : result);
     }
 

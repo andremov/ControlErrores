@@ -73,54 +73,102 @@ public class Lab_Redes extends JFrame {
 	this.polynomialText = "";
     }
 
+    public String getPolynomialText() {
+	return polynomialText;
+    }
+    
     public void updateUI() {
 	inputFile.setVisible(modo != MODO_ERROR);
 	outputFile.setVisible(modo != MODO_ERROR);
 	polynomial.setVisible(modo > 1);
 	((PanelInputFile) inputFile).clearDisplay();
 	((PanelOutputFile) outputFile).clearDisplay();
-	((PanelPolynomial) polynomial).clearDisplay();
+	((PanelOutputFile) outputFile).correctSaveFile();
 
 	this.inputText = "";
 	this.outputText = "";
-	this.polynomialText = "";
+    }
+
+    public void updatePolyText(String polyText) {
+	this.polynomialText = polyText;
+	process();
+    }
+    
+    public void sendPolynomial(String polyText) {
+	((PanelPolynomial) polynomial).updatePolynomial(polyText);
     }
 
     public void updateInputText(String inputText) {
-	this.outputText = "";
+	this.inputText = inputText;
+	process();
+    }
+
+    public void process() {
+
+	((PanelInputFile) inputFile).setWarning(false);
+	((PanelPolynomial) polynomial).setWarning(false);
 	
 	if (inputText.isEmpty()) {
-	    ((PanelInputFile) inputFile).setWarning(false);
 	    return;
 	}
-	
-	this.inputText = inputText;
+
+	this.outputText = "";
 	String middleMan;
-	
+
 	try {
-	    switch (modo) {
-		case MODO_CORRECCION_ENVIO:
-		    middleMan = Tools.translateAll(inputText, Tools.ASCII, Tools.BINARY);
-		    middleMan = middleMan.replaceAll("(\\d{8})", "$1" + "\n");
-		    middleMan = middleMan.substring(0, middleMan.length() - 1);
-		    this.outputText = Hamming.encode(middleMan);
-		    break;
-		case MODO_CORRECCION_RECEPCION:
-		    middleMan = Hamming.decode(this.inputText);
-		    middleMan = Tools.translateAll(middleMan, Tools.BINARY, Tools.ASCII);
-		    this.outputText = middleMan.replaceAll("\\n", "");
-		    break;
-		case MODO_DETECCION_ENVIO:
-		    this.outputText = CRC.encode(this.inputText, polynomialText);
-		    break;
-		case MODO_DETECCION_RECEPCION:
-		    this.outputText = CRC.decode(this.inputText, polynomialText);
-		    break;
+	    if (modo == MODO_CORRECCION_ENVIO) {
+		middleMan = Tools.translateAll(inputText, Tools.ASCII, Tools.BINARY);
+		middleMan = middleMan.replaceAll("(\\d{8})", "$1" + "\n");
+		middleMan = middleMan.substring(0, middleMan.length() - 1);
+		this.outputText = Hamming.encode(middleMan);
 	    }
-	    ((PanelInputFile) inputFile).setWarning(false);
+	    
+	    if (modo == MODO_CORRECCION_RECEPCION) {
+		middleMan = Hamming.decode(this.inputText);
+		middleMan = Tools.translateAll(middleMan, Tools.BINARY, Tools.ASCII);
+		this.outputText = middleMan.replaceAll("\\n", "");
+	    }
+	    
+	    if (modo == MODO_DETECCION_ENVIO) {
+		middleMan = Tools.translateAll(inputText, Tools.ASCII, Tools.BINARY);
+
+		int length = middleMan.length();
+		middleMan = middleMan.replaceAll("(\\d{128})", "$1" + "\n");
+		if (length % 128 == 0) {
+		    middleMan = middleMan.substring(0, middleMan.length() - 1);
+		}
+
+		this.outputText = CRC.encode(middleMan, polynomialText);
+	    }
+	    
+	    if (modo == MODO_DETECCION_RECEPCION) {
+		middleMan = CRC.decode(this.inputText, polynomialText);
+		String error = middleMan.split(";")[1];
+		middleMan = middleMan.split(";")[0];
+		if (error.equals("0")) {
+		    error = "No se encontraron errores.";
+		} else {
+		    if (error.equals("1")) {
+			error = "Se encontraron errores en 1 palabra de datos.";
+		    } else if (error.isEmpty()){
+			error="";
+		    }else{
+			error = "Se encontraron errores en " + error + " palabra de datos";
+		    }
+		}
+		middleMan = middleMan.replaceAll("(\\d{8})", "$1" + "\n");
+		this.outputText = Tools.translateAll(middleMan, Tools.BINARY, Tools.ASCII) + "\n" + error;
+	    }
+
+	    ((PanelOutputFile) outputFile).saveFile();
 	} catch (Exception e) {
-	    ((PanelInputFile) inputFile).setWarning(true);
+	    if (polynomial.isVisible() && polynomialText.isEmpty()) {
+		((PanelPolynomial) polynomial).setWarning(true);
+	    } else {
+		((PanelInputFile) inputFile).setWarning(true);
+	    }
 	}
+
 	((PanelOutputFile) outputFile).updateOutputText(this.outputText);
     }
 

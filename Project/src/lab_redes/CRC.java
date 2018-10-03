@@ -25,52 +25,46 @@ public abstract class CRC {
 
 	for (int i = 0; i < datawords.length; i++) {
 	    int datawordLength = datawords[i].length();
+
 	    for (int j = 0; j < polynomial.length() - 1; j++) {
 		datawords[i] += "0";
 	    }
+
 	    codewords[i] = datawordDivide(datawords[i], polynomial, datawordLength);
 	}
 
 	String joinedCodewords = Tools.joinStringArray(codewords, true);
-	joinedCodewords = joinedCodewords.substring(0, joinedCodewords.length() - 2);
-
 	return joinedCodewords;
     }
 
     public static String decode(String rawCodewords, String polynomial) {
 	if (!polynomial.contains("1")) {
-	    return "";
+	    return " ; ";
 	}
 
 	if (rawCodewords.isEmpty()) {
-	    return "";
+	    return " ; ";
 	}
 
 	String[] codewords = Tools.splitLines(rawCodewords);
 	String[] datawords = new String[codewords.length];
+	int syndromeLength = polynomial.length() - 1;
 
 	int numErrors = 0;
-
 	for (int i = 0; i < datawords.length; i++) {
-	    int datawordLength = codewords[i].length() - (polynomial.length() - 1);
+	    int datawordLength = codewords[i].length() - syndromeLength;
+
 	    String result = datawordDivide(codewords[i], polynomial, datawordLength);
-	    String syndrome = result.substring(result.length() - 3);
-	    if (syndrome.equals("000")) {
-		datawords[i - numErrors] = result.substring(0, result.length() - 3);
-	    } else {
+	    String syndrome = result.substring(result.length() - syndromeLength);
+	    if (syndrome.contains("1")) {
+		datawords[i] = result.substring(0, result.length() - syndromeLength);
 		numErrors++;
+	    } else {
+		datawords[i] = result.substring(0, result.length() - syndromeLength);
 	    }
 	}
 
-	String joinedDataWords = "";
-	if (datawords.length - numErrors > 0) {
-	    for (int i = 0; i < datawords.length - numErrors; i++) {
-		joinedDataWords += datawords[i] + "\\n";
-	    }
-	    joinedDataWords = joinedDataWords.substring(0, joinedDataWords.length() - 2);
-	}
-	joinedDataWords += ";" + numErrors;
-
+	String joinedDataWords = Tools.joinStringArray(datawords, true) + ";" + numErrors;
 	return joinedDataWords;
     }
 
@@ -86,15 +80,14 @@ public abstract class CRC {
 	for (int i = 0; i < datawordLength; i++) {
 	    if (splitData[i].equals("1")) {
 		for (int j = 0; j < splitPoly.length; j++) {
-		    int realAddress = i + j;
-		    splitData[realAddress] = (splitData[realAddress].equals(splitPoly[j]) ? "0" : "1");
+		    splitData[i + j] = (splitData[i + j].equals(splitPoly[j]) ? "0" : "1");
 		}
 	    }
 	}
 
 	String remainder = Tools.joinStringArray(splitData, false);
-	remainder = remainder.substring(remainder.length() - 3);
-	
-	return Tools.joinStringArray(splitResponse, false)+remainder;
+	remainder = remainder.substring(remainder.length() - (polynomial.length() - 1));
+
+	return Tools.joinStringArray(splitResponse, false) + remainder;
     }
 }
