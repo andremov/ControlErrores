@@ -28,6 +28,7 @@ public class Lab_Redes extends JFrame {
     }
 
     JPanel menu;
+    JPanel names;
     JPanel inputFile;
     JPanel outputFile;
     JPanel polynomial;
@@ -62,6 +63,9 @@ public class Lab_Redes extends JFrame {
 
 	outputFile = new PanelOutputFile();
 	add(outputFile);
+	
+	names = new PanelNames();
+	add(names);
 
 	add(new Placeholder(2));
 	add(new Placeholder(3));
@@ -80,6 +84,7 @@ public class Lab_Redes extends JFrame {
     public void updateUI() {
 	inputFile.setVisible(modo != MODO_ERROR);
 	outputFile.setVisible(modo != MODO_ERROR);
+	names.setVisible(modo != MODO_ERROR);
 	polynomial.setVisible(modo > 1);
 	((PanelInputFile) inputFile).clearDisplay();
 	((PanelOutputFile) outputFile).clearDisplay();
